@@ -4,13 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/noteLayout"
     android:layout_width="match_parent"
-    android:layout_height="80"
+    android:layout_height="80dp"
     tools:context=".mainCustomView">
+
+    <TextView
+        android:id="@+id/backgroundTextCustomView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/editImage"
         android:layout_width="64dp"
-        android:layout_height="0"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
@@ -29,8 +40,7 @@
         android:text="Note Title"
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/notifImageCustomView"
         app:layout_constraintStart_toEndOf="@+id/editImage"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,4 +53,17 @@
         android:text="Düzenleme Tarihi : 01.01.2019 00.00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editImage" />
+
+    <ImageView
+        android:id="@+id/notifImageCustomView"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="17dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/notifblack" />
+
 </android.support.constraint.ConstraintLayout>
