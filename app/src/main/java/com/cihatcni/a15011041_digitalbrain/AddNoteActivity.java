@@ -1,5 +1,8 @@
 package com.cihatcni.a15011041_digitalbrain;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +25,9 @@ public class AddNoteActivity extends AppCompatActivity {
     Note note;
     int position;
     String NOTE_COLOR = "#A7FFEB";
+    AlarmManager alarmMgr;
+    PendingIntent pendingIntent;
+    Calendar noteNotifTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +44,16 @@ public class AddNoteActivity extends AppCompatActivity {
             note = NoteManager.getInstance().getNoteList().get(position);
             noteTitle.setText(note.getTitle());
             contentText.setText(note.getContext());
+            NOTE_COLOR = note.getColor();
             layout.setBackgroundColor(Color.parseColor(note.getColor()));
         }
 
     }
 
     public void addNotification(View view) {
+        Toast.makeText(this, "Alarm Ayarlandı.", Toast.LENGTH_SHORT).show();
+        noteNotifTime = Calendar.getInstance();
+        noteNotifTime.add(Calendar.SECOND,15);
     }
 
     public void addDocument(View view) {
@@ -57,6 +67,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
     public void saveNote(View view) {
         Date date = Calendar.getInstance().getTime();
+
         if(position==-1) {
             note = new Note(noteTitle.getText().toString(), contentText.getText().toString(),NOTE_COLOR, date);
             NoteManager.getInstance().noteList.add(note);
@@ -66,12 +77,21 @@ public class AddNoteActivity extends AppCompatActivity {
             note.setDate(date);
             note.setColor(NOTE_COLOR);
         }
+
+
         if(noteTitle.getText().toString().equals(""))
             note.setTitle("Başlıksız Not");
         else
             note.setTitle(noteTitle.getText().toString());
+
+        if(noteNotifTime!=null) {
+            startAlarmManager(noteNotifTime);
+            note.setNotifSetted(true);
+        }
+
         Toast.makeText(this, "Not kaydediliyor.", Toast.LENGTH_SHORT).show();
         NoteManager.getInstance().saveInformationsToFile();
+
         finish();
     }
 
@@ -103,5 +123,16 @@ public class AddNoteActivity extends AppCompatActivity {
     }
 
     public void setPriority(View view) {
+    }
+
+    void startAlarmManager(Calendar alarmCalendar)
+    {
+        Intent dialogIntent = new Intent(this, AlarmReceiver.class);
+
+        alarmMgr = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 100, dialogIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmCalendar.getTimeInMillis(), pendingIntent);
+        System.out.println("ALARM KURULDU........................................................");
     }
 }
